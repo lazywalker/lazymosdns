@@ -1,0 +1,11 @@
+#!/bin/sh
+if pid=$(pgrep mosdns); then
+    echo "Stopping mosdns ..."
+    kill $pid
+
+fi
+
+sleep 5
+
+echo "Staring mosdns ..."
+/app/mosdns start -d /app &
