@@ -1,7 +1,10 @@
 #!/bin/sh
 
 echo "Updating rules ..."
-cd /app
+WORKDIR=$(dirname "$0")
+if [ -n "$WORKDIR" ]; then
+  cd "$WORKDIR" || exit 1
+fi
 curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o china_ip_list.txt
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -O
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -O
