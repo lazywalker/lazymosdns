@@ -50,6 +50,17 @@ plugins:
         - china_ip_list.txt
         # - /etc/mosdns/myvpsip.txt
 
+  # 转发至ROS地址表的插件
+  - tag: ros_addrlist_gfwlist
+    type: ros_addrlist
+    args:
+      addrlist: "mosdns-gfwlist"
+      server: "http://192.168.88.1:80"
+      user: "mosdns"
+      passwd: "Mosisgood"
+      mask4: 24
+      mask6: 32
+      
   # fallback的primary服务器, 返回国内ip则accept, 返回非国内ip则drop
   - tag: local_sequence
     type: sequence
@@ -66,7 +77,7 @@ plugins:
       - exec: $forward_remote
       # - matches: "!resp_ip $local_ip"
         # exec: ipset gfwlist,inet,32
-        # exec: ros_addrlist http://192.168.88.1:80,mosdns,Mosisgood,mosdns_gfwlist,inet,32
+        # exec: ros_addrlist_gfwlist
       - exec: accept
 
   # fallback sequence
@@ -84,9 +95,9 @@ plugins:
     args:
       - exec: ttl 300-3600
       - matches: "!resp_ip $local_ip"
-        # exec: ipset gfwlist,inet,24
-        exec: ros_addrlist http://192.168.88.1:80,mosdns,Mosisgood,mosdns-gfwlist,inet,32
+        exec: $ros_addrlist_gfwlist
       - exec: accept
+
 
   # 主运行序列
   - tag: main_sequence
