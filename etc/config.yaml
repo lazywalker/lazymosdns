@@ -47,7 +47,7 @@ plugins:
     type: ip_set
     args:
       files:
-        - china_ip_list.txt
+        - china-ip-list.txt
         # - /etc/mosdns/myvpsip.txt
 
   # 转发至ROS地址表的插件
@@ -131,8 +131,8 @@ plugins:
       - matches: has_resp
         exec: accept
 
-      # 国外域名(gfw.txt或者proxy-list.txt)
-      - matches: qname &gfw.txt
+      # 国外域名
+      - matches: qname &proxy-list.txt
         exec: $forward_remote
       - matches: has_resp
         exec: jump gfw-list
