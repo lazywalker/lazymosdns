@@ -9,4 +9,4 @@ curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -O
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -O
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -O
-
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -O && sed -i 's/.\{5\}//' apple-cn.txt

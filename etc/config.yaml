@@ -126,7 +126,7 @@ plugins:
         exec: accept
 
       # 国内域名
-      - matches: qname &direct-list.txt
+      - matches: qname &direct-list.txt &apple-cn.txt
         exec: $forward_local
       - matches: has_resp
         exec: accept
