@@ -131,8 +131,8 @@ plugins:
       - matches: has_resp
         exec: accept
 
-      # 国外域名
-      - matches: qname &proxy-list.txt
+      # 国外域名(gfw.txt或者proxy-list.txt)
+      - matches: qname &gfw.txt
         exec: $forward_remote
       - matches: has_resp
         exec: jump gfw-list
