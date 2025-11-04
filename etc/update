@@ -1,13 +1,15 @@
 #!/bin/sh
 
-echo "Updating rules ..."
-WORKDIR=$(dirname "$0")
-if [ -n "$WORKDIR" ]; then
-  cd "$WORKDIR" || exit 1
+if [ -z "${WORKDIR}" ] ; 
+then 
+  WORKDIR=/app
 fi
-curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o china-ip-list.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -O
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -O
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -O
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt -O
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -O
+
+echo "Updating rules ..."
+
+curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o $WORKDIR/china-ip-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -o $WORKDIR/reject-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -o $WORKDIR/direct-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -o $WORKDIR/proxy-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt -o $WORKDIR/gfw.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -o $WORKDIR/apple-cn.txt
