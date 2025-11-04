@@ -71,6 +71,7 @@ plugins:
   - tag: local_ip
     type: ip_set
     args:
+      auto_reload: true
       files:
         - china-ip-list.txt
         # - /etc/mosdns/myvpsip.txt
