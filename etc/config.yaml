@@ -42,6 +42,31 @@ plugins:
       files:
         - "hosts"
 
+  # 定义广告域名列表
+  - tag: ad-domain-list
+    type: domain_set
+    args:
+      auto_reload: true
+      files:
+        - reject-list.txt
+
+  # 定义国内域名列表
+  - tag: cn-domain-list
+    type: domain_set
+    args:
+      auto_reload: true
+      files:
+        - direct-list.txt
+        - apple-cn.txt
+  
+  # 定义gfw域名列表
+  - tag: gfw-domain-list
+    type: domain_set
+    args:
+      auto_reload: true
+      files:
+        - proxy-list.txt
+
   # china ip和自己的vps ip、国内dns ip、内网ip，避免这些ip被加到ipset
   - tag: local_ip
     type: ip_set
@@ -112,7 +137,7 @@ plugins:
         exec: reject 0
 
       # 屏蔽广告
-      - matches: qname &reject-list.txt # &/etc/mosdns/my-reject-list.txt
+      - matches: qname $ad-domain-list
         exec: black_hole 127.0.0.1
 
       - exec: prefer_ipv4
@@ -126,13 +151,13 @@ plugins:
         exec: accept
 
       # 国内域名
-      - matches: qname &direct-list.txt &apple-cn.txt
+      - matches: qname $cn-domain-list
         exec: $forward_local
       - matches: has_resp
         exec: accept
 
       # 国外域名
-      - matches: qname &proxy-list.txt
+      - matches: qname $gfw-domain-list
         exec: $forward_remote
       - matches: has_resp
         exec: jump gfw-list
