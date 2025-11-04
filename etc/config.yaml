@@ -77,7 +77,7 @@ plugins:
         # - /etc/mosdns/myvpsip.txt
 
   # 转发至ROS地址表的插件
-  - tag: ros_addrlist_gfwlist
+  - tag: add_gfwlist
     type: ros_addrlist
     args:
       addrlist: "mosdns-gfwlist"
@@ -121,7 +121,7 @@ plugins:
     args:
       - exec: ttl 300-3600
       - matches: "!resp_ip $local_ip"
-        exec: $ros_addrlist_gfwlist
+        exec: $add_gfwlist
       - exec: accept
 
 

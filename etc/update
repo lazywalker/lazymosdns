@@ -7,9 +7,16 @@ fi
 
 echo "Updating rules ..."
 
-curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o $WORKDIR/china-ip-list.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -o $WORKDIR/reject-list.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -o $WORKDIR/direct-list.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -o $WORKDIR/proxy-list.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt -o $WORKDIR/gfw.txt
-curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -o $WORKDIR/apple-cn.txt
+TMPDIR=/tmp/lazymosdns
+mkdir -p $TMPDIR
+
+curl https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o $TMPDIR/china-ip-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt -o $TMPDIR/reject-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt -o $TMPDIR/direct-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -o $TMPDIR/proxy-list.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt -o $TMPDIR/gfw.txt
+curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -o $TMPDIR/apple-cn.txt
+
+cp -f $TMPDIR/*.txt $WORKDIR/ && \
+rm -rf $TMPDIR
+echo "Update completed."
