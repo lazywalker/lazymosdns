@@ -74,7 +74,7 @@ plugins:
       auto_reload: true
       files:
         - china-ip-list.txt
-        # - /etc/mosdns/myvpsip.txt
+        - white-ip-list.txt
 
   # 转发至ROS地址表的插件
   - tag: add_gfwlist
