@@ -39,6 +39,7 @@ plugins:
   - tag: hosts
     type: hosts
     args:
+      auto_reload: true
       files:
         - "hosts"
 
@@ -58,6 +59,7 @@ plugins:
       files:
         - direct-list.txt
         - apple-cn.txt
+        - my-domain-list.txt
   
   # 定义gfw域名列表
   - tag: gfw-domain-list
