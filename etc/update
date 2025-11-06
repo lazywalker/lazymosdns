@@ -16,7 +16,8 @@ curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/dire
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt -o $TMPDIR/proxy-list.txt
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt -o $TMPDIR/gfw.txt
 curl https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt -o $TMPDIR/apple-cn.txt
+curl https://raw.githubusercontent.com/lazywalker/ghosts/refs/heads/master/hosts.mdns -o $TMPDIR/hosts-github.txt
 
-cp -f $TMPDIR/*.txt $WORKDIR/ && \
+cp -f $TMPDIR/*.txt $WORKDIR/
 rm -rf $TMPDIR
 echo "Update completed."

@@ -41,7 +41,8 @@ plugins:
     args:
       auto_reload: true
       files:
-        - "hosts"
+        - "hosts.txt"
+        - "hosts-github.txt"
 
   # 定义广告域名列表
   - tag: ad-domain-list
