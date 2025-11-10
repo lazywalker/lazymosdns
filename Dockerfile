@@ -8,9 +8,10 @@ RUN apk --no-cache add curl tzdata
 ADD /etc /app
 ADD /entrypoint.sh /app/entrypoint.sh
 ADD /bin/$TARGETPLATFORM/mosdns /app/mosdns
-RUN chmod +x /app/update && ln -s /app/update /etc/periodic/daily/update-cdn
+RUN chmod +x /app/update
 
-ENV TZ=Asia/Shanghai
+ENV TZ=Asia/Shanghai \
+    CRON="0 2 * * *"
     
 WORKDIR /app
 EXPOSE 53/tcp 53/udp
