@@ -12,3 +12,6 @@ buildx:
 local:
 	docker buildx build --platform linux/arm/v7 --output=type=docker -t mosdns .
 	docker save mosdns > mosdns.tar
+
+update:
+	WORKDIR=./etc ./etc/update
