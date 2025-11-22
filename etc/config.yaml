@@ -1,6 +1,7 @@
 log:
   level: info
   production: true
+  time_format: iso8601
 
 plugins:
   # 缓存

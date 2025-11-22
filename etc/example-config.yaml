@@ -4,6 +4,17 @@
 log:
   level: info
   production: true
+  # time_format controls how timestamps are formatted in logs.
+  # Supported values:
+  #   - "timestamp" (default): numeric epoch timestamp
+  #   - "iso8601": human-readable ISO8601 timestamp (e.g. 2025-11-22T14:15:26.048Z)
+  #   - "rfc3339": RFC3339 timestamp
+  #   - "custom:<layout>": custom Go time layout after `custom:` prefix
+  #     (e.g. custom:2006-01-02 15:04:05)
+  # Example: time_format: iso8601
+  # Note: For sensitive environments prefer shipping structured logs to
+  # a secure backend; avoid printing secrets.
+  time_format: timestamp
 
 plugins:
   # Local hosts provider (reads hosts files). Enable auto_reload to pick up changes.
