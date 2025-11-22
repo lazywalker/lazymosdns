@@ -1,0 +1,117 @@
+# Example mosdns configuration (annotated)
+# Save as: lazymosdns/etc/example-config.yaml
+
+log:
+  level: info
+  production: true
+
+plugins:
+  # Local hosts provider (reads hosts files). Enable auto_reload to pick up changes.
+  - tag: hosts
+    type: hosts
+    args:
+      auto_reload: true       # when true, files listed below are watched and reload triggers rebuild
+      files:
+        - "etc/hosts.txt"
+        - "etc/hosts-github.txt"
+
+  # domain_set example: lists defined by files; supports hot-reload
+  - tag: cn-domain-list
+    type: domain_set
+    args:
+      auto_reload: true
+      files:
+        - "etc/direct-list.txt"
+        - "etc/apple-cn.txt"
+
+  - tag: gfw-domain-list
+    type: domain_set
+    args:
+      auto_reload: true
+      files:
+        - "etc/proxy-list.txt"
+
+  # ip_set example: local IP ranges (whitelist) to avoid adding to address-lists
+  - tag: local_ip
+    type: ip_set
+    args:
+      auto_reload: true
+      files:
+        - "etc/china-ip-list.txt"
+        - "etc/white-ip-list.txt"
+
+  # RouterOS address-list integration: push discovered IPs/CIDRs to RouterOS
+  - tag: add_gfwlist
+    type: ros_addrlist
+    args:
+      addrlist: "mosdns-gfwlist"    # RouterOS address-list name
+      server: "http://192.168.88.1:80" # RouterOS management endpoint or import URL
+      user: "mosdns"
+      passwd: "REDACTED"            # store real password in env or secrets instead
+      mask4: 24                       # default aggregation mask for IPv4
+      mask6: 128                      # default aggregation mask for IPv6 (/128 means no aggregation)
+      dry_run: false                  # when true, only log actions (safe for testing)
+
+  # Sequence that adds IPs to RouterOS address-list if not in local_ip
+  - tag: gfw-list
+    type: sequence
+    args:
+      - exec: ttl 300-3600
+      - matches: "!resp_ip $local_ip"
+        exec: $add_gfwlist
+      - exec: accept
+
+  # local and remote forwarders
+  - tag: forward_local
+    type: forward
+    args:
+      concurrent: 2
+      upstreams:
+        - addr: udp://119.29.29.29
+        - addr: udp://223.5.5.5
+
+  - tag: forward_remote
+    type: forward
+    args:
+      concurrent: 2
+      upstreams:
+        - addr: tcp://8.8.8.8
+        - addr: tcp://1.1.1.1
+
+  # main processing sequence
+  - tag: main_sequence
+    type: sequence
+    args:
+      - exec: $hosts
+      - matches: has_resp
+        exec: accept
+      - matches: qname $ad-domain-list
+        exec: black_hole 127.0.0.1
+      - exec: prefer_ipv4
+      - matches: qname $cn-domain-list
+        exec: $forward_local
+      - matches: has_resp
+        exec: accept
+      - matches: qname $gfw-domain-list
+        exec: $forward_remote
+      - matches: has_resp
+        exec: jump gfw-list
+      - exec: $fallback
+
+  # DNS servers
+  - tag: udp_server
+    type: udp_server
+    args:
+      entry: main_sequence
+      listen: :53
+
+  - tag: tcp_server
+    type: tcp_server
+    args:
+      entry: main_sequence
+      listen: :53
+
+# Notes:
+# - Put sensitive secrets (passwd) into environment variables or a secret store.
+# - Files referenced by `files:` should exist and be written atomically (write temp + rename) to ensure watcher reliability.
+# - For testing, run generators with an `outputDir` (if supported) to avoid modifying repository example files.
